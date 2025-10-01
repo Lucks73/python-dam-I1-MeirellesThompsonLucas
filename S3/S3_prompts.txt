@@ -1,0 +1,19 @@
+- explicame el significado de "f" de manera sencilla en este código:
+print(f"Tu nombre es {nombre} y tienes {edad} años.")
+
+- Dime cómo importar una libreria en python y cual libreria debo de usar para ver la
+fecha actual en la que se ejecuta el codigo. Dame una respuesta breve, por favor!
+
+- como se escribe un "else if" en python
+
+- como puedo manejar un error si no se insertan numeros
+
+- como compartir un fichero con un repositorio de github por visual studio code 
+
+- y si, por ejemplo, quiero en realidad actualizar el fichero que ya tenia
+
+- y si es una carpeta
+
+- dime como subo por la primera vez un proyecto por la terminal 
+de vs code a github
+
