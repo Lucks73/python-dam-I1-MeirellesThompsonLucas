@@ -24,6 +24,7 @@ de vs code a github
 
 ------- eco_io.py -------
 
-Dame un codigo en Python que:
+- Dame un codigo en Python que:
 Pida 3 números 
 Mostre la suma, media y el número mayor entre ellos
+
