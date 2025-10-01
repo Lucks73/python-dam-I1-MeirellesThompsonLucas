@@ -17,3 +17,5 @@ fecha actual en la que se ejecuta el codigo. Dame una respuesta breve, por favor
 - dime como subo por la primera vez un proyecto por la terminal 
 de vs code a github
 
+
+- dame el codigo para anadir la variable de entorno de git en windows
