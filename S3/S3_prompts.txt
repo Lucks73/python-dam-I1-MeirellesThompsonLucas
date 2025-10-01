@@ -1,3 +1,6 @@
+
+------- Perfil.py --------
+
 - explicame el significado de "f" de manera sencilla en este código:
 print(f"Tu nombre es {nombre} y tienes {edad} años.")
 
@@ -17,5 +20,10 @@ fecha actual en la que se ejecuta el codigo. Dame una respuesta breve, por favor
 - dime como subo por la primera vez un proyecto por la terminal 
 de vs code a github
 
-
 - dame el codigo para anadir la variable de entorno de git en windows
+
+------- eco_io.py -------
+
+Dame un codigo en Python que:
+Pida 3 números 
+Mostre la suma, media y el número mayor entre ellos
