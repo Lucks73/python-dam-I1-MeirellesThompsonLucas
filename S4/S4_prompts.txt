@@ -1,0 +1,41 @@
+------- listaNumeros.py --------
+
+- Escribe un programa en python que pida una lista de números
+separados por comas, convierta a floats, calcile suma, media
+y máximo, y detexte duplicados.
+
+- ¿Qué hacen los corchetes "[ ]"?
+
+- Añade un control de errores al código.
+
+- Explica las siguientes líneas del código: "numeros = [float(x.strip()) for x in entrada.split(",")]"
+"media = suma / len(numeros)" "duplicados = set([x for x in numeros if numeros.count(x) > 1])" "if len(numeros) == 0:
+raise ValueError("No se detectaron números válidos.")" "except ValueError as e:" 
+"if not entrada.strip(): raise ValueError("La lista no puede estar vacía.")"
+
+- Añade en el código un apartado que verifique el tipo de valor insertado y que , caso no sea numerico, 
+se pida que se inserte otra vez los valores.
+
+------- temperaturas.py --------
+
+- Escribe un código en Python que sirva como un conversor de temperaturas de grados a kelvin o a 
+farenheit. Añade un control de errores en el que pida que inserte otra vez la temperatura caso la
+primera vez no haya sido del tipo correcto.
+
+------- cadenas.py --------
+
+- Escribe un programa que reciba una cadena y cuente las vocales que
+tiene, las consonantes, las mayúsculas y el número de caracteres y que,
+caso el tipo de caracter insertado no sea adecuado, pida que se inserte otra vez.
+
+- Explique por favor cada parte del código de manera detallada.
+
+------- primo.py --------
+
+- Escribe en Python un programa que reciba un número y nos diga si es primo o no.
+Añade un bucle que caso el tipo de caracter insertado no sea adecuado, pida que se inserte otra vez.
+
+- Explique por favor cada parte del código de manera detallada.
+
+- Explica esta parte del código de manera más detallada por favor:
+    for i in range(2, int(num ** 0.5) + 1):
