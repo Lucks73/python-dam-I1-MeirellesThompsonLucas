@@ -1,22 +1,30 @@
 ------- analisis_notas.py --------
 
-Escribe un programa en Python que pida al usuario
+- Escribe un programa en Python que pida al usuario
 una lista de valores numericos entre 0 y 10. Debe de contener
 un manejo de error en el caso de que no se pasen valores numéricos.
 Debe mostrar un resumen estadístico en el formato de boletín y
 contener:
-- Número total de notas
-- Media de notas y las notas minima y máxima
-- Porcentaje de examenes aprobados (>=5) y sobresalientes (>=9)
-- Nota más repetida (mostrar todas si hay empate.)
+    - Número total de notas
+    - Media de notas y las notas minima y máxima
+    - Porcentaje de examenes aprobados (>=5) y sobresalientes (>=9)
+    - Nota más repetida (mostrar todas si hay empate.)
 
 
-Añadir los siguientes cambios:
-- Que la lista pida los números todos de una vez pero separados
-por una coma.
-- Que los resultados sean mostrados con f-strings
-- Que sea más optimizado y más simplificado
-- Que los mensajes mostrados sean:
- “Nivel excelente” si la media ≥ 8
- “Nivel medio” si la media está entre 5 y 7.9
- “Necesita refuerzo” si la media < 5
+- Añadir los siguientes cambios:
+    - Que la lista pida los números todos de una vez pero separados
+    por una coma.
+    - Que los resultados sean mostrados con f-strings
+    - Que sea más optimizado y más simplificado
+    - Que los mensajes mostrados sean:
+    “Nivel excelente” si la media ≥ 8
+    “Nivel medio” si la media está entre 5 y 7.9
+    “Necesita refuerzo” si la media < 5
+
+ (Estos dos prompts fueron los principales usados para crear este código. Sin embargo
+ debido al hecho de que no conocía algunas de las librerías usadas le pedí que lo hiciera,
+ principalmente el apartado de la nota más repetida, de manera sencilla sin usar librerías
+ externas.)
+
+ - Cambia el apartado inicial para que haga un bucle que se repite mientras no
+ se inserten caracacteres validos.
