@@ -1,4 +1,5 @@
-import math,requests
+import math
+import requests # pip install requests
 
 # Parte de matemáticas
 print("Raíz cuadrada de 16:", math.sqrt(16))
