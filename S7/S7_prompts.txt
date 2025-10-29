@@ -1,0 +1,26 @@
+---- auxprecios.py, precios.py ----
+
+- Escribe el siguiente código en Python de manera tan sencilla como para que una persona que acaba de empezar a estudiar lo entienda: A. auxprecios.py, precios.py: imagina que tienes que crear un pequeño 
+módulo en Python para analizar una lista de precios, el módulo debe
+utilizar unas funciones útiles para trabajar con esa lista, sin repetir
+cálculos.
+
+- Añade el siguiente apartado: B. Errores. Modifica los módulos anteriores para que sean más robustos.
+Usa todos los bloques hemos visto: try, except, else, finally y raise.
+Elabora dos casos de prueba donde de produzcan errores y el programa
+no se rompa
+
+
+----- estandarNoEstandar.py -----
+
+- Teniendo en cuenta que mi grupo es compuesto por estudiantes
+ que acaban de empezar con Python, cómo podríamos realizar este 
+ apartado: 
+ Investigación de módulos (estándar y no estándar).
+ Elegid un módulo estándar y no estándar de Python, entended
+ para qué sirve y elaborar una pequeña ficha en la que 
+ seleccionéis dos o tres funciones relevantes del módulo 
+ y las expliquéis con un programa sencillito con su uso.
+
+- cambia este código para que request busque chistes en internet:
+ 

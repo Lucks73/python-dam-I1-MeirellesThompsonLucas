@@ -1,0 +1,21 @@
+
+----- sistema.py -----
+- Crea el siguiente código en Python de manera tan sencilla
+  como para que alguien que está empezando a estudiar el
+  lenguaje lo pueda comprender:
+        Elige un contexto y crea un pequeño sistema usando diccionarios:
+        1. Tienda → productos y precios
+        2. Biblioteca → libros y disponibilidad
+        3. Gimnasio → socios y cuotas
+        Cada alumno debe:
+        • Insertar, modificar y eliminar registros.
+        • Calcular al menos una métrica (media, suma, máximos...).
+        • Usar un bucle for para recorrer las claves y valores.
+        • Realizar una adaptación personalizada
+
+- ¿Qué significa .2f?
+
+- Modifica el código para que el usuario pueda hacer los siguientes apartados: • Insertar, modificar y eliminar registros.
+    • Calcular al menos una métrica (media, suma, máximos...).
+    • Usar un bucle for para recorrer las claves y valores.
+    • Realizar una adaptación personalizada
