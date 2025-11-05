@@ -1,0 +1,27 @@
+
+------- Anidadas.py -------
+
+- Escribir un código en Python tan sencillo como para que un
+ alumno que acaba de empezar a estudiar Python lo pueda entender 
+ que cumpla con el siguiente enunciado:
+Crea una estructura que contenga varios registros. Cada
+registro debe ser un diccionario con al menos tres campos que conforme
+una situación práctica en vuestra cotidianeidad. Implementa funciones
+para: añadir registros, buscar un registro por un campo, calcular una
+estadística (media, máximo, etc.). Controla errores: duplicados, vacíos,
+tipos incorrectos.
+Busca un ejemplo práctico para una estructura inversa (diccionario de
+listas) y explica las diferencias que encuentras.
+El tema del cotidiano quiero que sea películas y series.
+
+- Cambia el código para que los cambios y consultas lo pueda hacer el
+ usuario por la terminal y añade las explicaciones
+  en un apartado aparte.
+
+- que significa el "r" en esta línea
+"print(f"- {r['titulo']} ({r['tipo']}) → {r['calificacion']}")"
+
+- Dame un ejemplo tan simple como este que cumpla con el siguiente apartado:
+ Busca un ejemplo práctico para una estructura inversa (diccionario de
+listas) y explica las diferencias que encuentras.
+
