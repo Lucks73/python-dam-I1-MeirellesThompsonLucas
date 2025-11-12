@@ -1,0 +1,14 @@
+------ final.py ------
+
+- Crea un programa funcional en Python que sea tan sencillo como para un alumno 
+que acaba de empezar a estudiar el lenguaje pueda comprenderlo. Será un generador
+de personajes videojuego y tiene que cumplir con los siguientes requisitos: 
+  • Al menos 3 funciones, con parámetros y retorno.
+  • Control de errores con try/except (por entradas erróneas, índices, etc.).
+  • Uso de al menos un módulo estándar (datetime, math, random, os, etc.) con
+  sentido.
+  • Código legible, comentado y documentado.
+
+- Mejoralo para que puedan verse los personajes creados,
+que haya un menú de acciones que se puedan elegir y 
+que por defecto ya tenga una lista o diccionario de personajes ya hechos.

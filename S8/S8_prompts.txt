@@ -25,3 +25,18 @@ El tema del cotidiano quiero que sea películas y series.
  Busca un ejemplo práctico para una estructura inversa (diccionario de
 listas) y explica las diferencias que encuentras.
 
+------- refactor.py -------
+
+- *El prompt usado ha sido el mismo enunciado.
+
+- Explica para que sirve None en este código
+
+ERRORES ARREGLADOS:
+
+Indentación incorrecta: Todo el código debe estar indentado.
+
+Conversión directa de input: int(input(...)) puede lanzar ValueError si el usuario ingresa algo que no sea un número.
+
+División por cero: Si n es 0, sum(alumnos)/len(alumnos) fallará con ZeroDivisionError.
+
+Validación de notas: Las notas deberían estar entre 0 y 10.
