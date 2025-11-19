@@ -1,16 +1,12 @@
 # EmojiCipher GUI completo con emojis reales (librería emoji)
+#REALIZADO POR: 
+# JUAN CARLOS SANMIGUEL
+# LUCAS MEIRELLES
+# GONZALO FERNÁNDEZ
+# ANA PADILLA
+# ANAÍS GONZÁLEZ
 """
-Este programa crea una aplicación con ventana emergente (GUI) usando Tkinter.
-Incluye:
-- Codificación de texto a emojis
-- Decodificación
-- Sugeridor de emoji
-- Reemplazo en archivo
-- Juego de adivinanza
-- Uso de TODOS los emojis disponibles vía librería `emoji`
-- Uso de módulos: string, random, itertools
-- Control de errores
-- Comentarios y organización clara
+FICHERO DE PRUEBA PARA EmojiCipher.PY
 """
 
 import string
