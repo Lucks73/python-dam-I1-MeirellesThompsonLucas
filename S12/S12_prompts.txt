@@ -1,0 +1,7 @@
+------ Codigo.py ------
+- Corrige el prompt para que se lea mejor teniendo en cuenta el siguiente código.
+Cámbialo y añade una nueva opción de juego llamada “Identifica el emoji” o algo similar,
+junto con una función que haga lo siguiente: cuando el usuario elija el nuevo juego, 
+se le mostrará un emoji tomado de una lista muy grande y deberá adivinar su nombre.
+Conforme se equivoque, se revelará una letra del nombre del emoji en pantalla,
+hasta que gane o se muestren todas las letras de la palabra y pierda.
