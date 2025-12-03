@@ -6,6 +6,15 @@
 # DANIEL RAMOS JIMÉNEZ
 # LUCAS MEIRELLES THOMPSON
 
+
+#Ana	Funciones auxiliares y Configuración Global (# ---------------------- Funciones auxiliares ----------------------)	Se trata de actualizar la UI y normalizar texto. 
+#Anais	Traducción emoji (# ---------------------- Traducción emoji --------------------------)	Requiere entender emoji.emojize y demojize.
+#Gonzalo	Generar clave (# ---------------------- Generar clave -----------------------------) + Código principal (# ----------------------------- Cödigo ---------------------------)	Mezcla de diccionarios y codificación/decodificación.
+#Juan Carlos	Historial (# ---------------------- Historial ------------------------)	Solo registrar y mostrar, exportar y limpiar historial.
+#Lucas	Juegos (# ---------------------- Juegos ---------------------------)	Varias funciones de minijuegos con lógica y ventanas emergentes.
+#Daniel Ramos	Guardar/cargar clave + Interfaz UI + Wrappers de botones	Más largo, pero mayormente gestión de UI y botones, más fácil que juegos complicados.
+
+
 # EmojiCiper
 import tkinter as tk
 from tkinter import ttk, scrolledtext, filedialog, messagebox
@@ -340,6 +349,11 @@ peliculas_emoji = {
     "up": "🎈🏠👴",
 }
 
+lista_emojis_identificar = [
+    "😀", "😂", "🤣", "😍", "😎", "🤯", "🥶", "🤖", "👻", "🐱", "🐶", "🦊", "🐼",
+    "🌧️", "⚡", "🔥", "🌈", "⭐", "🌙", "🍎", "🍔", "🍕", "🥐", "⚽", "🏀", "🚗",
+    "✈️", "🚀", "📱", "💡", "🎲", "🎧", "🎮", "🎁", "👑", "📚", "💀"
+]
 
 ultima_frase = None
 ultima_peli = None
@@ -486,18 +500,9 @@ def jugar_pelicula_emoji():
     except Exception:
         messagebox.showerror("Error", "Hubo un fallo en el minijuego")
 
-# =========================================================
-# ------------------- Nuevo juego emoji -------------------
-# =========================================================
-
-# Lista grande de emojis → nombre en formato demojize
-lista_emojis_identificar = [
-    "😀", "😂", "🤣", "😍", "😎", "🤯", "🥶", "🤖", "👻", "🐱", "🐶", "🦊", "🐼",
-    "🌧️", "⚡", "🔥", "🌈", "⭐", "🌙", "🍎", "🍔", "🍕", "🥐", "⚽", "🏀", "🚗",
-    "✈️", "🚀", "📱", "💡", "🎲", "🎧", "🎮", "🎁", "👑", "📚", "💀"
-]
 
 def jugar_identifica_emoji():
+    """Minijuego: adivinar nombre del emoji enseñando una letra por cada fallo (ahorcado)."""
     try:
         em = random.choice(lista_emojis_identificar)
         nombre = emoji.demojize(em, language='es').strip(":")
