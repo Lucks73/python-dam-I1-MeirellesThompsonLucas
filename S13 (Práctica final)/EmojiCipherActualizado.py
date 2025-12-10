@@ -391,6 +391,45 @@ def generar_pista(respuesta: str) -> str:
     return f"Pista: iniciales {iniciales} — {len(partes)} palabra(s)."
 
 
+def cifrar_parcial_dialogo(dialogo: str, clave: dict) -> str:
+    """Cifra parcialmente un diálogo usando la clave.
+
+    Regla simple para que un alumno lo entienda:
+    - Para cada palabra, se deja la primera y la última letra sin cifrar
+      (si la palabra tiene longitud <=2 se deja completa),
+    - Las letras intermedias se reemplazan por su equivalente en la clave
+      (si existe), así el texto resultante mezcla letras y emojis.
+
+    Esto hace que "no todas las letras del diálogo estén cifradas".
+    """
+    if not clave:
+        # Si no hay clave, devolvemos el diálogo tal cual
+        return dialogo
+
+    palabras = dialogo.split()
+    partes_cifradas = []
+
+    for palabra in palabras:
+        if len(palabra) <= 2:
+            partes_cifradas.append(palabra)
+            continue
+
+        # Conservamos la primera y la última letra
+        primera = palabra[0]
+        ultima = palabra[-1]
+        medio = palabra[1:-1]
+
+        # Ciframos caracter a caracter el fragmento 'medio'
+        medio_cifrado = ""
+        for ch in medio:
+            medio_cifrado += clave.get(ch, ch)
+
+        partes_cifradas.append(primera + medio_cifrado + ultima)
+
+    # Unimos con espacios manteniendo cierta legibilidad
+    return " ".join(partes_cifradas)
+
+
 def pedir_respuesta(titulo, mensaje):
     """Ventana emergente que solicita respuesta al usuario.
     
@@ -441,86 +480,410 @@ def pedir_respuesta(titulo, mensaje):
 
 
 def jugar_frase_emoji():
-    """Minijuego: adivinar frase según emojis."""
+    """Minijuego: adivinar frase según emojis.
+
+    Mejoras respecto a la versión original:
+    - 3 intentos en lugar de 2
+    - Ventana más grande y centralizada
+    - Emojis y texto en fuente grande
+    - Intentos mostrados gráficamente con corazones
+    - Pista mostrada con colores para mayor claridad
+
+    El código está escrito de forma clara y con comentarios para
+    que un alumno primerizo lo entienda.
+    """
     global ultima_frase
     try:
+        # Elegir una frase distinta a la última
         frase, em = elegir_item_sin_repetir(frases_emoji, ultima_frase)
         if not frase:
             return
 
         ultima_frase = frase
-        intentos = 2
+        vidas = 3  # ahora hay 3 intentos/vidas
 
-        while intentos > 0:
-            mensaje = f"Traduce esta frase:\n\n{em}\n\nIntentos restantes: {intentos}"
-            respuesta = pedir_respuesta("Adivina la frase", mensaje)
+        # Crear una ventana modal propia para el minijuego
+        ventana_juego = tk.Toplevel(ventana)
+        ventana_juego.title("Adivina la frase")
 
+        # Tamaño grande y centrado respecto a la ventana principal
+        ancho, alto = 700, 420
+        try:
+            # Intentamos centrar respecto a la ventana principal
+            vx = ventana.winfo_rootx()
+            vy = ventana.winfo_rooty()
+            vw = ventana.winfo_width()
+            vh = ventana.winfo_height()
+            x = vx + (vw - ancho) // 2
+            y = vy + (vh - alto) // 2
+        except Exception:
+            # Fallback: centrar en pantalla
+            sw = ventana_juego.winfo_screenwidth()
+            sh = ventana_juego.winfo_screenheight()
+            x = (sw - ancho) // 2
+            y = (sh - alto) // 2
+
+        ventana_juego.geometry(f"{ancho}x{alto}+{x}+{y}")
+        ventana_juego.configure(bg=BG_PRIMARY)
+
+        # Mostrar los emojis en tamaño grande
+        lbl_emoji = tk.Label(
+            ventana_juego,
+            text=em,
+            font=("Segoe UI Emoji", 56),
+            bg=BG_PRIMARY,
+            fg=TXT_PRIMARY
+        )
+        lbl_emoji.pack(pady=(18, 6))
+
+        # Marco para los corazones (vidas)
+        frame_vidas = tk.Frame(ventana_juego, bg=BG_PRIMARY)
+        frame_vidas.pack()
+
+        corazones = []
+        for i in range(vidas):
+            # Cada corazón es una etiqueta que actualizaremos
+            lbl = tk.Label(frame_vidas, text="❤️", font=("Arial", 28), bg=BG_PRIMARY)
+            lbl.pack(side="left", padx=6)
+            corazones.append(lbl)
+
+        # Pista (vacía al principio). Cuando se muestre, tendrá colores.
+        pista_label = tk.Label(
+            ventana_juego,
+            text="",
+            font=("Consolas", 13),
+            bg="#FFF7AE",  # fondo suave amarillo
+            fg="#7C2D12",  # texto marrón oscuro
+            wraplength=ancho - 40,
+            justify="center"
+        )
+        pista_label.pack(pady=(12, 6), padx=20, fill="x")
+
+        # Entrada para la respuesta (texto grande)
+        entrada = tk.Entry(ventana_juego, font=("Consolas", 20))
+        entrada.pack(pady=8, padx=20, fill="x")
+        entrada.focus_set()
+
+        # Función auxiliar para actualizar la vista de corazones según vidas
+        def actualizar_corazones(n_vidas):
+            for idx, lbl in enumerate(corazones):
+                if idx < n_vidas:
+                    lbl.config(text="❤️")
+                else:
+                    lbl.config(text="🤍")  # corazón vacío
+
+        # Generar y mostrar pista con estilo cuando quede 1 vida
+        def mostrar_pista():
+            pista = generar_pista(frase)
+            # Cambiamos colores para que la pista llame la atención
+            pista_label.config(
+                text=f"🎯 Pista: {pista}",
+                bg="#D1FAE5",  # verde suave
+                fg="#065F46"   # verde oscuro
+            )
+
+        # Lógica que se ejecuta al enviar la respuesta
+        def enviar():
+            nonlocal vidas
+            respuesta = entrada.get()
+
+            # Si el usuario cierra o envía vacío, no hacemos nada
+            if respuesta is None or respuesta.strip() == "":
+                return
+
+            # Comprobación normalizada (quita acentos y espacios)
             if normalize_text(respuesta) == normalize_text(frase):
                 messagebox.showinfo("Correcto", "¡Has acertado! 🎉")
+                ventana_juego.destroy()
                 return
 
-            intentos -= 1
+            # Respuesta incorrecta: restar una vida y actualizar UI
+            vidas -= 1
+            actualizar_corazones(vidas)
 
-            if intentos == 1:
-                messagebox.showinfo("Pista", generar_pista(frase))
-            else:
+            if vidas == 1:
+                # Mostrar pista más vistosa cuando queda una vida
+                mostrar_pista()
+                # Pequeño aviso informativo para el jugador
+                messagebox.showinfo("Pista", "Te dejo una pista para ayudarte 💡")
+
+            if vidas <= 0:
+                # Se acabaron los intentos: revelar la frase
                 messagebox.showerror("Fin del juego", f"La frase era:\n\n{frase}")
-                return
+                ventana_juego.destroy()
+
+        # Botón Enviar grande y claro
+        btn_enviar = tk.Button(
+            ventana_juego,
+            text="Enviar",
+            command=enviar,
+            font=("Arial", 14, "bold"),
+            bg=BTN_MAIN,
+            fg="white",
+            width=12
+        )
+        btn_enviar.pack(pady=12)
+
+        # Permitir enviar con Enter
+        entrada.bind("<Return>", lambda e: enviar())
+
+        # Modal: evitar interacción con la ventana principal
+        ventana_juego.transient(ventana)
+        ventana_juego.grab_set()
+        ventana.wait_window(ventana_juego)
 
     except Exception:
         messagebox.showerror("Error", "Hubo un fallo en el minijuego")
 
 def jugar_pelicula_emoji():
-    """Minijuego: adivinar película según emojis."""
-    global ultima_peli
+    """Minijuego: adivinar película según emojis.
+
+    Mejoras aplicadas:
+    - 3 intentos (vidas) mostradas como corazones
+    - Ventana más grande y centrada
+    - Pista con colores cuando queda 1 vida
+    - Debajo de los emojis se muestra una frase cifrada (diálogo famoso)
+    - Al iniciar, salta una ventana con la clave actual como pista
+
+    Código claro y comentado para estudiantes principiantes.
+    """
+    global ultima_peli, clave_actual
     try:
         peli, em = elegir_item_sin_repetir(peliculas_emoji, ultima_peli)
         if not peli:
             return
 
         ultima_peli = peli
-        intentos = 2
+        vidas = 3  # usamos 3 intentos
 
-        while intentos > 0:
-            mensaje = f"Adivina la película:\n\n{em}\n\nIntentos restantes: {intentos}"
-            respuesta = pedir_respuesta("Adivina la película", mensaje)
+        # Algunos diálogos famosos para las películas (pequeña muestra)
+        dialogos = {
+            "titanic": "I'm the king of the world!",
+            "el rey leon": "Hakuna Matata",
+            "avatar": "I see you",
+            "it": "You'll float too",
+            "jurassic park": "Welcome to Jurassic Park",
+            "harry potter": "You're a wizard, Harry",
+            "star wars": "May the Force be with you",
+            "toy story": "To infinity and beyond",
+            "buscando a nemo": "Just keep swimming",
+            "spider man": "With great power comes great responsibility",
+            "frozen": "Let it go",
+            "piratas del caribe": "Why is the rum gone?",
+            "la bella y la bestia": "Tale as old as time",
+            "shrek": "Ogres are like onions",
+            "up": "Adventure is out there"
+        }
+
+        # Tomamos el diálogo correspondiente, o un mensaje por defecto
+        dialogo = dialogos.get(peli.lower(), "Diálogo no disponible")
+
+        # Si hay clave, ciframos el diálogo para mostrarlo (es una pista cifrada)
+        if clave_actual:
+            dialogo_cifrado = codificar(dialogo, clave_actual)
+        else:
+            dialogo_cifrado = "(No hay clave cargada para cifrar la frase)"
+
+        # Crear ventana del juego
+        ventana_juego = tk.Toplevel(ventana)
+        ventana_juego.title("Adivina la película")
+
+        ancho, alto = 720, 520
+        try:
+            vx = ventana.winfo_rootx()
+            vy = ventana.winfo_rooty()
+            vw = ventana.winfo_width()
+            vh = ventana.winfo_height()
+            x = vx + (vw - ancho) // 2
+            y = vy + (vh - alto) // 2
+        except Exception:
+            sw = ventana_juego.winfo_screenwidth()
+            sh = ventana_juego.winfo_screenheight()
+            x = (sw - ancho) // 2
+            y = (sh - alto) // 2
+
+        ventana_juego.geometry(f"{ancho}x{alto}+{x}+{y}")
+        ventana_juego.configure(bg=BG_PRIMARY)
+
+        # Mostrar emojis en grande
+        lbl_emoji = tk.Label(ventana_juego, text=em, font=("Segoe UI Emoji", 56), bg=BG_PRIMARY, fg=TXT_PRIMARY)
+        lbl_emoji.pack(pady=(18, 6))
+
+        # Creamos una estructura de dos columnas: izquierda para emojis y diálogo,
+        # derecha para mostrar la clave (pista) dentro de la misma ventana.
+        contenido = tk.Frame(ventana_juego, bg=BG_PRIMARY)
+        contenido.pack(expand=True, fill="both", padx=12, pady=6)
+
+        col_izq = tk.Frame(contenido, bg=BG_PRIMARY)
+        col_izq.pack(side="left", expand=True, fill="both")
+
+        col_der = tk.Frame(contenido, bg=BG_PRIMARY)
+        col_der.pack(side="right", fill="y", padx=(8, 0))
+
+        # Mostrar la frase cifrada debajo de los emojis (esta es la pista cifrada),
+        # pero cifrada parcialmente para que no todas las letras estén cifradas.
+        dialogo_parcial = cifrar_parcial_dialogo(dialogo, clave_actual) if clave_actual else dialogo
+
+        lbl_cifrado = tk.Label(
+            col_izq,
+            text=dialogo_parcial,
+            font=("Consolas", 12),
+            bg="#0b1a2b",
+            fg="#D1FAE5",
+            wraplength=(ancho // 2) - 40,
+            justify="center"
+        )
+        lbl_cifrado.pack(pady=(6, 12), padx=20, fill="x")
+
+        # En la columna derecha mostramos la clave actual en un cuadro con scroll.
+        tk.Label(col_der, text="Clave (pista)", font=("Consolas", 11, "bold"), bg=BG_PRIMARY, fg=TXT_PRIMARY).pack(pady=(6, 4))
+
+        clave_box = scrolledtext.ScrolledText(col_der, width=30, height=18, font=("Consolas", 10))
+        clave_box.pack(padx=4, pady=4)
+        if clave_actual:
+            clave_box.insert(tk.END, formato_clave_legible(clave_actual))
+        else:
+            clave_box.insert(tk.END, "No hay clave cargada. Genera o carga una clave para ver la pista.")
+        clave_box.config(state="disabled")
+
+        # Marco para las vidas (corazones) en la columna izquierda, bajo el diálogo
+        frame_vidas = tk.Frame(col_izq, bg=BG_PRIMARY)
+        frame_vidas.pack(pady=(6, 0))
+
+        corazones = []
+        for i in range(vidas):
+            lbl = tk.Label(frame_vidas, text="❤️", font=("Arial", 28), bg=BG_PRIMARY)
+            lbl.pack(side="left", padx=6)
+            corazones.append(lbl)
+
+        # Pista legible (vacía inicialmente). Se mostrará con colores cuando quede 1 vida
+        pista_label = tk.Label(
+            col_izq,
+            text="",
+            font=("Consolas", 13),
+            bg="#FFF7AE",
+            fg="#7C2D12",
+            wraplength=(ancho // 2) - 40,
+            justify="center"
+        )
+        pista_label.pack(pady=(12, 6), padx=20, fill="x")
+
+        # Entrada para adivinar la película (columna izquierda)
+        entrada = tk.Entry(col_izq, font=("Consolas", 20))
+        entrada.pack(pady=8, padx=20, fill="x")
+        entrada.focus_set()
+
+        def actualizar_corazones(n_vidas):
+            for idx, lbl in enumerate(corazones):
+                if idx < n_vidas:
+                    lbl.config(text="❤️")
+                else:
+                    lbl.config(text="🤍")
+
+        def mostrar_pista():
+            pista = generar_pista(peli)
+            pista_label.config(
+                text=f"🎬 Pista: {pista}",
+                bg="#E0F2FE",  # azul claro
+                fg="#0369A1"   # azul oscuro
+            )
+
+        # Lógica del envío de respuesta
+        def enviar():
+            nonlocal vidas
+            respuesta = entrada.get()
+            if respuesta is None or respuesta.strip() == "":
+                return
 
             if normalize_text(respuesta) == normalize_text(peli):
                 messagebox.showinfo("Correcto", "¡Has acertado! 🎉")
+                ventana_juego.destroy()
                 return
 
-            intentos -= 1
-            if intentos == 1:
-                messagebox.showinfo("Pista", generar_pista(peli))
-            else:
+            # respuesta incorrecta
+            vidas -= 1
+            actualizar_corazones(vidas)
+
+            if vidas == 1:
+                mostrar_pista()
+                messagebox.showinfo("Pista", "Aquí tienes una pista para ayudarte 💡")
+
+            if vidas <= 0:
                 messagebox.showerror("Fin del juego", f"La película era:\n\n{peli}")
-                return
+                ventana_juego.destroy()
+
+        btn_enviar = tk.Button(ventana_juego, text="Enviar", command=enviar, font=("Arial", 14, "bold"), bg=BTN_MAIN, fg="white", width=12)
+        btn_enviar.pack(pady=12)
+
+        entrada.bind("<Return>", lambda e: enviar())
+
+        ventana_juego.transient(ventana)
+        ventana_juego.grab_set()
+        ventana.wait_window(ventana_juego)
 
     except Exception:
         messagebox.showerror("Error", "Hubo un fallo en el minijuego")
 
 
 def jugar_identifica_emoji():
-    """Minijuego: adivinar nombre del emoji enseñando una letra por cada fallo (ahorcado)."""
+    """Minijuego: adivinar nombre del emoji (versión gráfica).
+
+    Mejoras:
+    - 3 intentos (vidas) mostradas como corazones
+    - Ventana centrada y más grande
+    - Pista con colores cuando queda 1 vida
+    - Si el usuario introduce espacios en la respuesta, se interpretan
+      como '_' para que no tenga que escribir el guion bajo manualmente.
+
+    El código está escrito de forma clara para estudiantes principiantes.
+    """
     try:
         em = random.choice(lista_emojis_identificar)
+        # Obtenemos el nombre del emoji y lo normalizamos
         nombre = emoji.demojize(em, language='es').strip(":")
         nombre = normalize_text(nombre)
+        # Para nombres compuestos usamos '_' como separador interno
+        nombre = nombre.replace(" ", "_")
 
+        # Configuración de la ventana del juego
         ventana_juego = tk.Toplevel(ventana)
         ventana_juego.title("Identifica el emoji")
-        ventana_juego.geometry("480x350")
 
-        tk.Label(ventana_juego, text=f"Adivina el nombre del emoji:\n\n{em}",
-                 font=("Consolas", 22)).pack(pady=20)
+        ancho, alto = 520, 420
+        try:
+            vx = ventana.winfo_rootx()
+            vy = ventana.winfo_rooty()
+            vw = ventana.winfo_width()
+            vh = ventana.winfo_height()
+            x = vx + (vw - ancho) // 2
+            y = vy + (vh - alto) // 2
+        except Exception:
+            sw = ventana_juego.winfo_screenwidth()
+            sh = ventana_juego.winfo_screenheight()
+            x = (sw - ancho) // 2
+            y = (sh - alto) // 2
 
-        # Progreso del nombre
+        ventana_juego.geometry(f"{ancho}x{alto}+{x}+{y}")
+        ventana_juego.configure(bg=BG_PRIMARY)
+
+        # Mostrar emoji en grande
+        tk.Label(ventana_juego, text=em, font=("Segoe UI Emoji", 64), bg=BG_PRIMARY, fg=TXT_PRIMARY).pack(pady=(18, 6))
+
+        # Progreso del nombre: ocultamos letras (alfanuméricas) con '_' pero
+        # dejamos caracteres no alfanuméricos (por ejemplo guiones o '_') visibles.
+        # Este juego NO usa vidas: se van revelando letras hasta completar.
         progreso = ["_" if c.isalnum() else c for c in nombre]
-        lbl_progreso = tk.Label(ventana_juego, text=" ".join(progreso), font=("Consolas", 18))
+        lbl_progreso = tk.Label(ventana_juego, text=" ".join(progreso), font=("Consolas", 22), bg=BG_PRIMARY, fg=TXT_PRIMARY)
         lbl_progreso.pack(pady=10)
 
-        entrada = tk.Entry(ventana_juego, font=("Consolas", 14))
-        entrada.pack(pady=10)
+        # Pista visual (vacía al principio)
+        pista_label = tk.Label(ventana_juego, text="", font=("Consolas", 13), bg="#FFF7AE", fg="#7C2D12", wraplength=ancho-40, justify="center")
+        pista_label.pack(pady=(8, 6), padx=12, fill="x")
+
+        # Entrada amplia para escribir la respuesta
+        entrada = tk.Entry(ventana_juego, font=("Consolas", 18))
+        entrada.pack(pady=8, padx=20, fill="x")
+        entrada.focus_set()
 
         def actualizar_progreso():
             lbl_progreso.config(text=" ".join(progreso))
@@ -532,21 +895,35 @@ def jugar_identifica_emoji():
                 progreso[idx] = nombre[idx]
                 actualizar_progreso()
 
+        def mostrar_pista():
+            # Pista simple: mostrar primera letra y número de caracteres
+            pista = f"Comienza con '{nombre[0]}' — {len(nombre)} caracteres"
+            pista_label.config(text=f"🔎 Pista: {pista}", bg="#D1FAE5", fg="#065F46")
+
+        # Lógica al enviar respuesta (sin vidas)
         def enviar():
-            intento = normalize_text(entrada.get())
+            texto = entrada.get()
+            # Permitimos que el usuario ponga espacios en lugar de '_' — los convertimos
+            texto = texto.replace(" ", "_")
+            intento = normalize_text(texto)
+
             entrada.delete(0, tk.END)
 
             if intento == nombre:
                 messagebox.showinfo("Correcto", "¡Has acertado! 🎉")
                 ventana_juego.destroy()
-            else:
-                revelar_letra()
-                if "_" not in progreso:
-                    messagebox.showerror("Perdiste", f"La palabra era:\n{nombre}")
-                    ventana_juego.destroy()
+                return
 
-        tk.Button(ventana_juego, text="Enviar", command=enviar,
-                  font=("Arial", 12, "bold")).pack(pady=10)
+            # fallo: revelar una letra
+            revelar_letra()
+
+            # Si ya no quedan guiones, el usuario pierde (todas las letras han sido reveladas)
+            if "_" not in progreso:
+                messagebox.showerror("Perdiste", f"La respuesta era:\n{nombre}")
+                ventana_juego.destroy()
+
+        btn_enviar = tk.Button(ventana_juego, text="Enviar", command=enviar, font=("Arial", 14, "bold"), bg=BTN_MAIN, fg="white", width=12)
+        btn_enviar.pack(pady=12)
 
         entrada.bind("<Return>", lambda e: enviar())
 

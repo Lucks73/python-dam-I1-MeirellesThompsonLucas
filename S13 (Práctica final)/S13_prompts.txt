@@ -1,0 +1,38 @@
+
+ Cambia el código para que en el mini juego "Adivina la frase con emojis" se vean las siguientes mejoras:
+ - Se sube la cantidad de intentos para 3
+ - Las letras se ven bastante más grandes así como la ventana y los emojis
+ - La ventana se ve centralizada 
+ - Los intentos se vean gráficamente como corazoncitos de vida
+ - La mensaje de pista se vea mejor y con más colores
+ El código debe de ser limpio y tan entendible como para que un alumno que acaba de empezar a estudiar
+ Python lo entienda. Devuelva el código completo.
+
+
+Ahora cambia el de adivinar pelicula y añade las siguientes modificaciones:
+(Realiza cambios como los de adivinar la frase)
+- Se suben los intentos para 3
+- Los intentos se vean gráficamente como corazoncitos de vida
+- La ventana se ve centralizada 
+- La mensaje de pista se vea mejor y con más colores
+(y realiza cambios exclusivos)
+- abajo de los emoji está una frase cifrada. Esa frases
+será un dialogo famoso de la pelicula en cuestion, pero el usuario tendrá que identificarlo.
+- No se pide que traduzca la frase pero saltará la ventana con la clave actual
+para que sirva de pista para adivinar la pelicula.
+Recuerda que el código debe de ser limpio y tan entendible como para que un alumno que acaba de empezar a estudiar
+Python lo entienda. Devuelva el código completo.
+
+
+ Por último, cambia identifica el emoji para que se vea graficamente
+ como los otros dos mini juegos.
+ (Realiza cambios como los de los otros)
+- La ventana se ve centralizada 
+- La mensaje de pista se vea mejor y con más colores
+(y realiza cambios exclusivos)
+- que cuando el usuario inserte un espacio en blanco
+para escribir un nombre compuesto de emoji, que lo lea como
+un "_" para que el mismo usuario no tenga que escribir el
+"_" manualmente.
+Recuerda que el código debe de ser limpio y tan entendible como para que un alumno que acaba de empezar a estudiar
+Python lo entienda. Devuelva el código completo.

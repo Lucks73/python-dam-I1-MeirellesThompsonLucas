@@ -1,0 +1,103 @@
+Registro de cambios - Proyecto EmojiCipher
+Fecha: 10/12/2025
+Autor de los cambios: Asistente (ediciones solicitadas Lucas Meirelles Thompson)
+
+Resumen general:
+Se han realizado modificaciones en los tres minijuegos y se añadió una función auxiliar para cifrar parcialmente diálogos. Los cambios están escritos para ser claros y pedagógicos, pensados para que un alumno que comienza en Python los entienda.
+
+
+Secciones / funciones modificadas (lista exacta):
+1) jugar_frase_emoji
+2) jugar_pelicula_emoji
+3) jugar_identifica_emoji
+4) cifrar_parcial_dialogo (nueva función)
+5) Ajustes menores: pedir_respuesta (sin cambios funcionales), interfaz principal (sin cambios funcionales relevantes)
+
+Detalles por sección (qué cambié y cómo):
+
+1) jugar_frase_emoji
+- Qué había antes: versión modal básica que mostraba emojis y pedía la respuesta con 2 intentos.
+- Cambios aplicados:
+  - Aumenté el número de intentos a 3 (variable `vidas = 3`).
+  - Ventana nueva más grande (`700x420`) y centrada respecto a la ventana principal (se calculan coordenadas y hay fallback a pantalla).
+  - Emoji mostrado con tamaño grande usando la fuente `Segoe UI Emoji`, tamaño `56`.
+  - Los intentos ahora se representan gráficamente con corazones (etiquetas `Label` con "❤️" y "🤍").
+  - Añadí una etiqueta `pista_label` con fondo y texto coloreados; la pista se muestra en verde suave (`#D1FAE5` / `#065F46`) cuando queda 1 vida.
+  - La entrada y el botón "Enviar" se hicieron más grandes y legibles (fuentes y ancho).
+  - Comentarios en el código para que la lógica sea fácil de seguir por un estudiante.
+
+- Comportamiento final:
+  - El usuario tiene 3 intentos; al fallar se resta una vida y un corazón se pone vacío.
+  - Al quedar 1 vida aparece la pista coloreada y un pequeño aviso.
+  - Al acertar se muestra un `messagebox` de éxito; al agotar vidas se muestra la respuesta correcta.
+
+2) jugar_pelicula_emoji
+- Qué había antes: versión similar a la frase, con 2 intentos y mensaje emergente para mostrar la clave.
+- Cambios aplicados:
+  - Aumenté los intentos a 3 y representé los intentos con corazones (igual que en `jugar_frase_emoji`).
+  - Ventana más grande (`720x520`) y centrada.
+  - Emoji mostrado en fuente grande (`Segoe UI Emoji`, 56).
+  - Añadí la lógica para mostrar un diálogo famoso de la película debajo del emoji. El diálogo se cifra parcialmente (ver `cifrar_parcial_dialogo`).
+  - Moví la visualización de la clave desde un `messagebox` emergente a un `ScrolledText` dentro de la misma ventana (columna derecha). Esto permite consultar la clave sin cerrar la ventana.
+  - Reorganicé la ventana en dos columnas: columna izquierda con emoji, diálogo parcial, vidas y entrada; columna derecha con la `ScrolledText` que contiene `formato_clave_legible(clave_actual)`.
+  - La pista legible (cuando quede 1 vida) se muestra en una `Label` con colores (azul claro / azul oscuro) para destacar.
+  - Si no existe `clave_actual`, el `ScrolledText` muestra un mensaje indicándolo.
+
+- Nuevas estructuras añadidas:
+  - `dialogos` (diccionario local con frases célebres para cada película listada).
+  - Uso de `codificar(...)` sobre el diálogo solo si existe `clave_actual`, y además usamos `cifrar_parcial_dialogo` para mostrar parte en claro y parte cifrada.
+
+- Comportamiento final:
+  - El usuario ve el emoji y una línea con el diálogo parcialmente cifrado.
+  - La clave está visible en la ventana (panel derecho) en formato legible y con scrollbar.
+  - 3 intentos con corazones; al quedar 1 vida aparece la pista coloreada; al agotar vidas se revela la película.
+
+3) jugar_identifica_emoji
+- Qué había antes: un mini-juego estilo "ahorcado" con letra por letra y 2 intentos; ventana pequeña.
+- Cambios aplicados:
+  - Reescribí la función para que sea coherente con los otros minijuegos: ventana más grande (`520x420`) y centrada; emoji mostrado en grande (fuente 64).
+  - Eliminé las "vidas" (solicitud posterior del usuario): el juego ya NO usa corazones ni contador de vidas.
+  - Ahora la mecánica es: el usuario envía una respuesta; si falla, se revela automáticamente una letra (aleatoria) del nombre oculto. Se continúa hasta que el usuario adivine o hasta que no queden guiones bajos (`'_'`) en la palabra (es decir, todas las letras han sido reveladas).
+  - Si el nombre del emoji tiene espacios (nombre compuesto), el código internamente usa guion bajo `_` como separador: al mostrar/ocultar y al comparar, los espacios introducidos por el usuario se transforman en `_` automáticamente. Esto facilita que el usuario no tenga que escribir `_` manualmente.
+  - Pista visual que aparece cuando quedan pocas letras sin revelar: etiqueta `pista_label` con color de fondo `#D1FAE5` y texto `#065F46`.
+  - Texto y botones con fuentes más grandes para legibilidad (estudiantes principiantes).
+
+- Comportamiento final:
+  - El jugador no tiene un número limitado de intentos.
+  - Cada fallo revela una letra al azar.
+  - Si el jugador acierta, se muestra éxito; si todas las letras llegan a revelarse y el jugador no acertó, se muestra la respuesta correcta.
+
+4) Nueva función: cifrar_parcial_dialogo(dialogo: str, clave: dict)
+- Propósito: mostrar un diálogo en el que "no todas las letras estén cifradas" para que la pista sea legible.
+- Algoritmo (inteligible para alumnado):
+  - Para cada palabra:
+    - Si la palabra tiene longitud <= 2, dejarla tal cual.
+    - En caso contrario, dejar la primera y la última letra sin cifrar.
+    - Cifrar el resto (letras intermedias) carácter a carácter usando `clave.get(ch, ch)`.
+  - Unir las palabras resultantes con espacios y devolver la cadena.
+- Resultado: mezcla de letras y emojis en el diálogo mostrado (más fácil de leer que el cifrado total).
+
+5) Otros ajustes menores y notas de implementación
+- Conservé las funciones auxiliares existentes (`normalize_text`, `formato_clave_legible`, `codificar`, `decodificar`, `generar_clave`) y las usé donde correspondía.
+- La función `pedir_respuesta` no recibió cambios funcionales importantes; la dejé para usos anteriores del código.
+- Comentarios y docstrings añadidos y mejorados en las funciones modificadas para que el código sea educativo.
+
+Ejemplos concretos (antes / después):
+- Antes (`jugar_pelicula_emoji`): la clave se mostraba con `messagebox.showinfo("Clave (pista)", formato_clave_legible(clave_actual))`.
+- Después: dentro de la ventana de juego aparece un `ScrolledText` con la clave (solo lectura) para consultar sin interrumpir la interacción.
+
+- Antes (`jugar_identifica_emoji`): el juego usaba vidas y mostraba corazones; el usuario debía escribir exactamente el nombre (incluyendo `_`).
+- Después: el juego no usa vidas; al escribir espacios el código los traduce a `_`; además, cada fallo revela una letra y hay una pista coloreada cuando se acerca el final.
+
+Sugerencias / próximos pasos (opcionales):
+- Si quieres, puedo:
+  - cambiar la regla de cifrado parcial para mostrar por ejemplo solo las vocales sin cifrar;
+  - hacer que la caja de la clave sea plegable (mostrar/ocultar) en `jugar_pelicula_emoji`;
+  - reemplazar los corazones emoji por imágenes para un diseño más consistente.
+
+Registro de archivos tocados (líneas aproximadas):
+- `S12/Codigo.py` — varias inserciones y modificaciones alrededor de las funciones:
+  - `jugar_frase_emoji` (sección juegos, antes cerca de la definición original)
+  - `jugar_pelicula_emoji` (sección juegos)
+  - `cifrar_parcial_dialogo` (añadida después de `generar_pista`)
+  - `jugar_identifica_emoji` (reemplazada por versión gráfica)
