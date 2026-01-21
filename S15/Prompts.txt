@@ -1,0 +1,29 @@
+Los prompts que hemos utilizado han sido:
+
+
+- PARA LA REALIZACIÓN DE Gestor.py:    
+
+Teniendo en cuenta que le he pasado las otras 2 clases a la IA:    
+
+Realiza una simple interfaz grafica que muestre lo necesario para gestionar estas clases    
+realizala usando python    
+
+Dale un tono oscuro por lo menos, y mas estilizado
+
+- PARA LA REALIZACIÓN DE Aparcamiento.py    
+
+Genérame la clase aparcamiento, que tiene como atributos plazas 
+(es un array tridimensional  de objetos coche, que representa un parking de varias plantas.
+Cuando una plaza queda libre, el elemento situado en las coordenadas de la plaza que estaría libre sería nulo),
+plazas_libres (es un integer) y hay_plazas_libres (es un booleano, en caso de que todas las plazas estén 
+ocupadas será false, en caso contrario será true). además, esta clase cuenta con los métodos vaciar plaza
+(recibe un objeto coche, que es el que ocupa la plaza que vamos a vaciar, llama al método de pago de ese objeto
+ coche y devuelve el string que recoge de él), y llenar plaza (recibe un objeto coche y lo mete en la 
+ primera plaza libre del array plazas).
+ 
+ - PARA LA REALIZACIÓN DE Coche.py    
+
+ Coche* Matricula String* horaEntrada Date* horaSalida Date   * Pagar*
+ 
+ Dame una clase de python que va a ser usada para gestionar un parking, el metodo pagar debe devolver
+  un string

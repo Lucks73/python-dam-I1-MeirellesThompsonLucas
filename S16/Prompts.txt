@@ -1,0 +1,37 @@
+----  ----
+Necesito que cambies mi código de S16 en Python de la siguiente manera:
+- Quite de la clase gestor el máximo de funciones que podrían estar en otras clases, manteniendo
+solamente en la clase gestor un código que siga los siguientes parámetros:
+    En la clase principal del dominio:
+    • Define una interfaz clara de métodos (mínimo 4)
+    • La GUI / Gestor debe interactuar solo mediante estos métodos
+    • No debe acceder directamente a estructuras internas
+    Ejemplos orientativos:
+    • entrar(matricula)
+    • salir(matricula)
+    • listar_coches()
+    • plazas_libres()
+    • resumen()
+
+- Modifica el código donde sea necesario para que se muestre un bloque en el 
+que se vea la lista de las matriculas aparcadas junto con su tipo de matricula
+(para ello añade también una manera de saber si la matrícula es comun, minusválida,
+eléctrica, etc... a la hora de añadir un coche al aparcamiento) de manera gráfica
+en la misma ventana. Recuerda que la clase gestor no debe tocar en ninguna 
+estructura que no sea propia de ella.
+
+- Necesito las siguientes mejoras en la aplicación:
+
+Que la etiqueta del tipo de matrícula sea más visible y clara.
+
+Corregir cualquier error gramatical en los textos de la interfaz.
+
+Al crear una nueva matrícula, sin importar si la anterior es distinta, que por defecto siempre se marque como “Común”.
+
+La ventana debe permitir scroll vertical para poder ver toda la lista de matrículas.
+
+Al iniciar la aplicación deben existir matrículas precargadas y mostrarse automáticamente en la lista.
+
+Importante: el gestor no debe modificar estructuras que no le correspondan.
+
+Implementar solo estos cambios sin alterar otras funcionalidades.
