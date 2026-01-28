@@ -1,0 +1,39 @@
+
+---- S17 ----
+
+-   Quiero modelar un sistema sencillo de gestión de pedidos online.
+    Un pedido:
+    ● contiene productos
+    ● tiene un estado (creado, pagado, enviado...)
+    ● tiene un importe total
+    ● no puede hacer cualquier cosa en cualquier momento
+    Por ejemplo:
+    ● un pedido no puede enviarse si no está pagado
+    ● un pedido no puede pagarse dos veces
+    ● un pedido no puede tener importe negativo
+
+    Se necesita definir al menos 3 clases que representen elementos reales del sistema.
+    Es importante implementar encapsulación
+    ● No se deben modificar atributos directamente desde fuera de la clase.
+    ● El estado del objeto debe cambiar solo a través de métodos.
+    ● Los métodos deben representar acciones reales del dominio.
+    El objetivo es evitar estados inválidos del sistema.
+
+    Necesito que crees 3 clases que sean relacionadas con una tienda de videojuegos.
+    Se podrá comprar juegos, encargarlos, leer su descripción, verificar las tiendas en 
+    las que está disponible, entre otras funciones extras que debes aplicar.
+    Es necesario que el código sea entendible para un alumno que acaba de empezar a estudiar Python
+    por lo que debe ser simple y estar comentado. Además, que estén todas las clases
+    en el mismo fichero s17_pedidos.py.
+
+    Por último, teniendo en cuenta que todo se realizará en la carpeta S17, añade
+    un archivo s17_diseño.md en el que se debe incluir: 
+    ○ descripción del sistema
+    ○ listado de clases
+    ○ qué representa cada clase
+    ○ qué responsabilidades tiene
+
+
+-   Cambia el código y añade una interfaz gráfica en la que el usuario pueda elegir las acciones.
+    Recuerda que hay que mantener el código lo más simple posible y comentado y actualiza el .md con los
+    nuevos cambios.
