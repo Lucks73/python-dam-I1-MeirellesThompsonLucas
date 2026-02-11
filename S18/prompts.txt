@@ -1,0 +1,43 @@
+-   Desarrollar dentro de la carpeta S18 un código en Python que cumpla con
+    todos los requisitos del enunciado abajo. Es importante que el código
+    sea tan simple como para que un estudiante que acaba de empezar a estudiar
+    Python pueda comprenderlo sin problema y que también esté bien comentado
+    el código.
+
+    Vamos a desarrollar un gestor de incidencias para una empresa. Una incidencia
+    puede ser:
+    • técnica
+    • administrativa
+    • de usuario
+    Cada incidencia:
+    • tiene un estado
+    • tiene un responsable
+    • se puede cerrar o reabrir
+    • se registra en el sistema
+
+    Requisitos OBLIGATORIOS
+    Tu programa debe tener al menos:
+    1. Una clase Incidencia
+    o datos: descripción, estado, prioridad
+    o métodos: abrir, cerrar, mostrar_info
+    2. Al menos dos tipos distintos de incidencia
+    o usando herencia
+    o con alguna diferencia real de comportamiento
+    3. Una clase GestorIncidencias
+    o usando composición
+    o que almacene incidencias
+    o que permita listarlas y gestionarlas
+    4. Encapsulación
+    o no se puede cambiar el estado “a mano”
+    o los cambios pasan por métodos
+    5. Menú funcional
+    o crear incidencia
+    o listar
+    o cambiar estado
+
+
+
+-   Crea una clase que contenga una muy buena interfaz
+    grafica que use incidencias.py en su total funcionalidad
+    pero sin añadir ni una sola linea de código en incidencias.py,
+    solamente trabajando desde fuera.
